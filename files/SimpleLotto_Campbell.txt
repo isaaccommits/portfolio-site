@@ -1,0 +1,62 @@
+# Name: Isaac Campbell
+# Date: 10/27/2024
+# Purpose: Randomly generates and outputs a user's lotto tickets and winning numbers
+# Inputs: None
+# Outputs: Winning lottery numbers, lotto ticket numbers, and winnings
+
+import random # Module for random selection
+
+# Constants
+MATCH_EXACT_WIN = 10000
+MATCH_BOTH_WIN = 3000
+MATCH_ONE_WIN = 1000
+
+total_winnings = 0
+
+def compute_win(num_ticket):
+    global total_winnings # Get global variable outside of function
+    
+    matching_count = 0
+
+    num_winning = random.randint(0, 99) # Random number from 0 to 99
+    print(f"The lottery number is: {num_winning:02d}") # Prints number in 2 digits
+    
+    print(f" Your lotto ticket is: {num_ticket:02d}")
+    
+    if num_ticket == num_winning: # If numbers match exactly
+        total_winnings += MATCH_EXACT_WIN
+        print(f"You win ${MATCH_EXACT_WIN}\n")
+        
+    else:
+        # If first digits match each other,
+        if (num_ticket % 10) == (num_winning % 10):
+            matching_count += 1
+
+        # Else, if first digit matches second digit,
+        elif (num_ticket % 10) == (num_winning // 10):
+            matching_count += 1
+
+        # If second digits match each other,
+        if (num_ticket // 10) == (num_winning // 10):
+            matching_count += 1
+
+        # Else, if second digit matches first digit,
+        elif (num_ticket // 10) == (num_winning % 10):
+            matching_count += 1
+
+        if matching_count > 0: # If any digits match,
+            if matching_count > 1: # If more than one digit matches,
+                total_winnings += MATCH_BOTH_WIN
+                print(f"You win ${MATCH_BOTH_WIN}\n")
+            else: # If just one digit matches,
+                total_winnings += MATCH_ONE_WIN
+                print(f"You win ${MATCH_ONE_WIN}\n")
+
+        else: # If no digits match,
+            print(f"You win $0\n")
+
+            
+for count in range(5): # Loops 5 times
+    compute_win(random.randint(0, 99)) # Goes through lottery with random number
+
+print(f"Total Winning Amount ${total_winnings}")

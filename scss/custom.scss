@@ -1,0 +1,61 @@
+// Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+
+/*
+keys:
+$body-color, $body-bg
+$secondary-color, $secondary-bg
+$tertiary-color, $tertiary-bg
+$emphasis-color
+$border-color
+$primary, $primary-bg-subtle, $primary-border-subtle, $primary-text-emphasis
+$success, $success-bg-subtle, $success-border-subtle $success-text-emphasis
+$danger, $danger-bg-subtle, $danger-border-subtle, $danger-text-emphasis
+$warning, $warning-bg-subtle, $warning-border-subtle, $warning-text-emphasis
+$info, $info-bg-subtle, $info-border-subtle, $info-text-emphasis
+$light, $light-bg-subtle, $light-border-subtle, $light-text-emphasis
+$dark, $dark-bg-subtle, $dark-border-subtle, $dark-text-emphasis
+*/
+
+
+@import "../bootstrap/scss/functions";
+
+
+
+// default overrides
+
+$body-bg: #96c9ee;
+
+// $custom-colors: (
+//     "green": #1b4
+// );
+
+
+
+@import "../bootstrap/scss/variables";
+@import "../bootstrap/scss/variables-dark";
+
+
+
+// map overrides
+
+// $theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+
+// remaining
+
+@import "../bootstrap/scss/maps";
+@import "../bootstrap/scss/mixins";
+@import "../bootstrap/scss/root";
+
+
+
+// optionals
+
+@import "../bootstrap/scss/utilities";
+@import "../bootstrap/scss/reboot";
+@import "../bootstrap/scss/type";
+@import "../bootstrap/scss/images";
+@import "../bootstrap/scss/containers";
+@import "../bootstrap/scss/grid";
+@import "../bootstrap/scss/helpers";

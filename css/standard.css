@@ -1,0 +1,76 @@
+.s-bg-green
+{
+    background-color: #1b4;
+    background-image: var(--bs-gradient);
+}
+
+.s-bg-green-50
+{
+    background-color: #1b48;
+    background-image: var(--bs-gradient);
+}
+
+.s-bg-green-25
+{
+    background-color: #1b44;
+    background-image: var(--bs-gradient);
+}
+
+.s-bg-green-10
+{
+    background-color: rgba(17, 187, 68, 0.1);
+    background-image: var(--bs-gradient);
+}
+
+/* buttons */
+.s-btn-eng
+{
+    /* <div class="h1 s-bg-green-50 border-white border-top border-start border-4 rounded-2"> */
+    color: #fff;
+    background-color: #18b4;
+    border-color: #18b;
+    border-style: inset;
+    border-width: 4px;
+    border-radius: 8px;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    width: 60%;
+    margin: auto;
+    transition-duration: 0.5s;
+}
+
+.s-btn-eng:hover, .s-btn-eng:focus, .s-btn-eng:focus-visible /* focus-visible for selection with tab key */
+{
+    background-color: #18b8;
+    transition-duration: 0.5s;
+}
+
+.s-btn-eng-sub
+{
+    background-color: #1080b035;
+}
+
+.s-btn-code
+{
+    /* <div class="h1 s-bg-green-50 border-white border-top border-start border-4 rounded-2"> */
+    color: #fff;
+    background-color: #1b44;
+    border-color: #1b4;
+    border-style: inset;
+    border-width: 4px;
+    border-radius: 8px;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    width: 70%;
+    margin: auto;
+    transition-duration: 0.5s;
+}
+
+.s-btn-code:hover, .s-btn-code:focus, .s-btn-code:focus-visible /* focus-visible for selection with tab key */
+{
+    background-color: #1b48;
+    transition-duration: 0.5s;
+}
+
+.s-btn-code-sub
+{
+    background-color: #10b04035;
+}

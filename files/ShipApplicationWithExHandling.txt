@@ -1,0 +1,394 @@
+//Name: Isaac Campbell
+//Date: 4/28/2025
+//Program: Project 12a - Ship Application with Exception Handling
+
+import java.util.Scanner;
+
+class Ship
+{
+    public String name = "";
+    public int year = 0;
+    public String fuelType = "";
+    public String countryOfReg = ""; // Country of registration
+    public int tonnage = 0;
+    public double length = 0.0D;
+    public double beam = 0.0D;
+
+    public Ship() {}
+
+    public Ship(String iName, int iYear, String iFuelType, String iCountryOfReg, int iTonnage, double iLength, double iBeam)
+    {
+        name = iName;
+        year = iYear;
+        fuelType = iFuelType;
+        countryOfReg = iCountryOfReg;
+        tonnage = iTonnage;
+        length = iLength;
+        beam = iBeam;
+    }
+
+    public String shipToString() // Built-in method toString() cannot be overridden
+    {
+        return String.format("%s, %s\n", name, year);
+    }
+
+    public String toRegister()
+    {
+        return String.format("%s, %s\n", name, countryOfReg);
+    }
+
+    public String toSize()
+    {
+        return String.format("%s, %s GT, %s m, %s m\n", name, tonnage, length, beam);
+    }
+
+    public String toFull()
+    {
+        return String.format("%s, %s\n%s | Tonnage: %s | Length: %s m | Beam: %s m\n", name, year, countryOfReg, tonnage, length, beam);
+    }
+
+    public String getName() {return name;}
+    public void setName(String nName) {name = nName;}
+
+    public int getYear() {return year;}
+    public void setYear(int nYear) {year = nYear;}
+
+    public String getFuelType() {return fuelType;}
+    public void setFuelType(String nType) {fuelType = nType;}
+
+    public String getCountryOfReg() {return countryOfReg;}
+    public void setCountryOfReg(String nCountry) {countryOfReg = nCountry;}
+
+    public int getTonnage() {return tonnage;}
+    public void setTonnage(int nTonnage) {tonnage = nTonnage;}
+
+    public double getLength() {return length;}
+    public void setLength(double nLength) {length = nLength;}
+
+    public double getBeam() {return beam;}
+    public void setBeam(double nBeam) {beam = nBeam;}
+}
+
+class CruiseShip extends Ship
+{
+    public int maxPassengers = 0;
+
+    public CruiseShip() {}
+
+    public CruiseShip(String iName, int iYear, String iFuelType, String iCountryOfReg, int iTonnage, double iLength, double iBeam, int iMaxPassengers)
+    {
+        name = iName;
+        year = iYear;
+        fuelType = iFuelType;
+        countryOfReg = iCountryOfReg;
+        tonnage = iTonnage;
+        length = iLength;
+        beam = iBeam;
+        maxPassengers = iMaxPassengers;
+    }
+
+    public String shipToString() // Built-in method toString() cannot be overridden
+    {
+        return String.format("%s, %s\n", name, maxPassengers);
+    }
+
+    public String toFull()
+    {
+        return String.format("%s, %s\n%s | Tonnage: %s | Length: %s m | Beam: %s m\nPassengers: %s\n", name, year, countryOfReg, tonnage, length, beam, maxPassengers);
+    }
+
+    public int getMaxPassengers() {return maxPassengers;}
+    public void setMaxPassengers(int nCapacity) {maxPassengers = nCapacity;}
+}
+
+class CargoShip extends Ship
+{
+    public String cargoType = "";
+    public int cargoCapacity = 0;
+
+    public CargoShip() {}
+
+    public CargoShip(String iName, int iYear, String iFuelType, String iCountryOfReg, int iTonnage, double iLength, double iBeam, String iCargoType, int iCargoCapacity)
+    {
+        name = iName;
+        year = iYear;
+        fuelType = iFuelType;
+        countryOfReg = iCountryOfReg;
+        tonnage = iTonnage;
+        length = iLength;
+        beam = iBeam;
+        cargoType = iCargoType;
+        cargoCapacity = iCargoCapacity;
+    }
+
+    public String shipToString() // Built-in method toString() cannot be overridden
+    {
+        return String.format("%s, %s TEU\n", name, cargoCapacity);
+    }
+
+    public String toFull()
+    {
+        return String.format("%s, %s\n%s | Tonnage: %s | Length: %s m | Beam: %s m\n%s: %s TEU\n", name, year, countryOfReg, tonnage, length, beam, cargoType, cargoCapacity);
+    }
+
+    public String getCargoType() {return cargoType;}
+    public void setCargoType(String nType) {cargoType = nType;}
+
+    public int getCapacity() {return cargoCapacity;}
+    public void setCapacity(int nCapacity) {cargoCapacity = nCapacity;}
+}
+
+class ContainerShip extends CargoShip
+{
+    public String rackType = "";
+
+    public ContainerShip() {}
+
+    public ContainerShip(String iName, int iYear, String iFuelType, String iCountryOfReg, int iTonnage, double iLength, double iBeam, String iCargoType, int iCargoCapacity, String iRackType)
+    {
+        name = iName;
+        year = iYear;
+        fuelType = iFuelType;
+        countryOfReg = iCountryOfReg;
+        tonnage = iTonnage;
+        length = iLength;
+        beam = iBeam;
+        cargoType = iCargoType;
+        cargoCapacity = iCargoCapacity;
+        rackType = iRackType;
+    }
+
+    public String shipToString() // Built-in method toString() cannot be overridden
+    {
+        return String.format("%s, Rail: %s, %s TEU\n", name, rackType, cargoCapacity);
+    }
+
+    public String toFull()
+    {
+        return String.format("%s, %s\n%s | Tonnage: %s | Length: %s m | Beam: %s m\nContainer, Rail: %s, %s: %s TEU\n", name, year, countryOfReg, tonnage, length, beam, rackType, cargoType, cargoCapacity);
+    }
+
+    public String getRackType() {return rackType;}
+    public void setRackType(String nRackType) {rackType = nRackType;}
+}
+
+public class ShipApplicationWithExHandling
+{
+    static int NumberOfShips = 100;
+    static Ship[] shipArray = new Ship[NumberOfShips];
+
+    public static void showMenu()
+    {
+        String menuString = """
+        ******** Ship Application ********
+        - (A)dd ship to database.
+        - (R)emove ship from database.
+        - (S)earch database for ship name.
+        - (L)ist ships in database.
+        - (Q)uit application.
+        """;
+
+        System.out.println(menuString);
+    }
+
+    public static String addShip() throws IllegalArgumentException
+    {
+        Scanner input = new Scanner(System.in);
+        String returnString = "";
+        String[] validShips = {"Generic", "Cruise", "Cargo", "Container"};
+        
+        System.out.println("What type of ship would you like to add?\n> ");
+        String selection = input.nextLine();
+        boolean matches = false;
+        for (int i = 0; i < validShips.length; i++)
+        {
+            if (selection.equals(validShips[i])) {matches = true;}
+        }
+
+        if (matches)
+        {
+            Ship shipToAdd = new Ship();
+            
+            System.out.println("What is the name of your ship?\n> ");
+            shipToAdd.setName(input.nextLine());
+
+            System.out.println("What year was your ship built?\n> ");
+            shipToAdd.setYear(input.nextInt());
+
+            System.out.println("What is your ship's fuel type?\n> ");
+            shipToAdd.setFuelType(input.nextLine());
+
+            System.out.println("What is your ship's country of registration?\n> ");
+            shipToAdd.setCountryOfReg(input.nextLine());
+
+            System.out.println("What is your ship's tonnage?\n> ");
+            shipToAdd.setTonnage(input.nextInt());
+
+            System.out.println("What is your ship's length (in meters)?\n> ");
+            shipToAdd.setLength(input.nextDouble());
+
+            System.out.println("What is your ship's beam size (in meters)?\n> ");
+            shipToAdd.setBeam(input.nextDouble());
+            
+            shipToAdd = subclassBuildAdditional(shipToAdd, selection);
+            
+            for (int i = 0; i < shipArray.length; i++)
+            {
+                if (shipArray[i] == null)
+                {
+                    shipArray[i] = shipToAdd;
+                    break;
+                }
+            }
+
+            returnString = "Ship added!";
+        }
+        else {throw new IllegalArgumentException("Invalid ship type.");}
+
+        return returnString;
+    }
+
+    public static Ship subclassBuildAdditional(Ship ship, String type)
+    {
+        Scanner input = new Scanner(System.in);
+        CruiseShip newCruiseShip = new CruiseShip(ship.name, ship.year, ship.fuelType, ship.countryOfReg, ship.tonnage, ship.length, ship.beam, 0);
+        CargoShip newCargoShip = new CargoShip(ship.name, ship.year, ship.fuelType, ship.countryOfReg, ship.tonnage, ship.length, ship.beam, "", 0);
+        ContainerShip newContainerShip = new ContainerShip(ship.name, ship.year, ship.fuelType, ship.countryOfReg, ship.tonnage, ship.length, ship.beam, "", 0, "");
+        Ship returnShip = null;
+
+        switch (type)
+        {
+            case "Generic":
+                returnShip = ship;
+                break;
+            case "Cruise":
+                System.out.println("How many passengers can your ship hold?\n> ");
+                newCruiseShip.setMaxPassengers(input.nextInt());
+                returnShip = newCruiseShip;
+                break;
+            case "Cargo":
+                System.out.println("What is your ship's cargo type?\n> ");
+                newCargoShip.setCargoType(input.nextLine());
+
+                System.out.println("What is your ship's maximum cargo capacity (in tons)?\n> ");
+                newCargoShip.setCapacity(input.nextInt());
+                returnShip = newCargoShip;
+                break;
+            case "Container":
+                System.out.println("What is your ship's cargo type?\n> ");
+                newContainerShip.setCargoType(input.nextLine());
+
+                System.out.println("What is your ship's maximum cargo capacity (in tons)?\n> ");
+                newContainerShip.setCapacity(input.nextInt());
+
+                System.out.println("What is your ship's rack type?\n> ");
+                newContainerShip.setRackType(input.next());
+                returnShip = newContainerShip;
+                break;
+        }
+        
+        return returnShip;
+    }
+
+    public static String removeShip(String shipName) throws IllegalArgumentException
+    {
+        String returnString = "Error: Ship not in database.";
+        boolean inDatabase = false;
+
+        for (int i = 0; i < shipArray.length; i++)
+        {
+            if (shipArray[i] != null)
+            {
+                if (shipArray[i].getName().equals(shipName))
+                {
+                    shipArray[i] = null;
+                    returnString = "Ship removed.";
+                    inDatabase = true;
+                }
+            }
+        }
+
+        if (!inDatabase) {throw new IllegalArgumentException("Ship not in database.");}
+
+        return returnString;
+    }
+
+    public static String searchShip(String shipName) throws IllegalArgumentException
+    {
+        String returnString = "Error: Ship not found.";
+        boolean inDatabase = false;
+
+        for (int i = 0; i < shipArray.length; i++)
+        {
+            if (shipArray[i] != null)
+            {
+                if (shipArray[i].getName().equals(shipName))
+                {
+                    returnString = shipArray[i].shipToString();
+                    inDatabase = true;
+                }
+            }
+        }
+
+        if (!inDatabase) {throw new IllegalArgumentException("Ship not found.");}
+
+        return returnString;
+    }
+
+    public static void listShips()
+    {
+        for (int i = 0; i < shipArray.length; i++)
+        {
+            if (shipArray[i] != null)
+            {
+                System.out.println(shipArray[i].toFull());
+            }
+        }
+    }
+
+    public static void quitShips()
+    {
+        System.exit(0);
+    }
+
+    public static void main(String[] args)
+    {
+        Scanner input = new Scanner(System.in);
+        String selection = "";
+        showMenu();
+
+        boolean proceed = true;
+        while (proceed)
+        {
+            selection = input.nextLine();
+            if (selection.equals("A")) {System.out.println(addShip());}
+            else if (selection.equals("R"))
+            {
+                try
+                {
+                    System.out.println("What is the name of the ship you would like to remove?\n> ");
+                    String toRemove = input.nextLine();
+                    System.out.println(removeShip(toRemove));
+                }
+                catch (IllegalArgumentException ex) {System.out.println(ex);}
+            }
+            else if (selection.equals("S"))
+            {
+                try
+                {
+                    System.out.println("What is the name of the ship you would like to search for?\n> ");
+                    String toSearch = input.nextLine();
+                    System.out.println(searchShip(toSearch));
+                }
+                catch (IllegalArgumentException ex) {System.out.println(ex);}
+            }
+            else if (selection.equals("L")) {listShips();}
+            else if (selection.equals("Q")) {quitShips();}
+            else
+            {
+                System.out.println("Invalid command.");
+            }
+            showMenu();
+        }
+    }
+}
