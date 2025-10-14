@@ -30,7 +30,7 @@
     background-color: #18b4;
     border-color: #18b;
     border-style: inset;
-    border-width: 4px;
+    border-width: 3px;
     border-radius: 8px;
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     width: 60%;
@@ -56,7 +56,7 @@
     background-color: #1b44;
     border-color: #1b4;
     border-style: inset;
-    border-width: 4px;
+    border-width: 3px;
     border-radius: 8px;
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     width: 70%;
