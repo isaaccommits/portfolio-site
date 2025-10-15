@@ -44,187 +44,187 @@ var upgrade_description = "[right]Dual Turret | $200
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var tree = get_tree()
-	
-	placement_area.body_entered.connect(invalidate)
-	placement_area.body_exited.connect(validate)
-	mouse_entered.connect(encandidate)
-	mouse_exited.connect(excandidate)
-	timer.timeout.connect(on_timeout)
-	range_area.body_entered.connect(add_target)
-	range_area.body_exited.connect(remove_target)
-	
-	path = tree.get_first_node_in_group("track").get_node("Path")
-	camera = tree.get_first_node_in_group("camera")
-	towers = tree.get_first_node_in_group("towers")
-	stats = tree.get_first_node_in_group("stats_manager")
-	world = tree.get_first_node_in_group("world")
-	upgrade_container = tree.get_first_node_in_group("upgrade_container")
-	
-	var unique_material = energy_mesh.get_surface_override_material(0).duplicate()
-	energy_mesh.set_surface_override_material(0, unique_material) # To prevent animation overlap
+    var tree = get_tree()
+    
+    placement_area.body_entered.connect(invalidate)
+    placement_area.body_exited.connect(validate)
+    mouse_entered.connect(encandidate)
+    mouse_exited.connect(excandidate)
+    timer.timeout.connect(on_timeout)
+    range_area.body_entered.connect(add_target)
+    range_area.body_exited.connect(remove_target)
+    
+    path = tree.get_first_node_in_group("track").get_node("Path")
+    camera = tree.get_first_node_in_group("camera")
+    towers = tree.get_first_node_in_group("towers")
+    stats = tree.get_first_node_in_group("stats_manager")
+    world = tree.get_first_node_in_group("world")
+    upgrade_container = tree.get_first_node_in_group("upgrade_container")
+    
+    var unique_material = energy_mesh.get_surface_override_material(0).duplicate()
+    energy_mesh.set_surface_override_material(0, unique_material) # To prevent animation overlap
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not placing:
-		if (target != null) and (target_follower != null):
-			if position.distance_to(target_follower.position) <= range_distance + diameter:
-				look_at(target_follower.position)
-				rotation *= Vector3(0, 1, 0)
-				
-				if can_shoot:
-					can_shoot = false
-					timer.start()
-					var new_laser = laser.instantiate()
-					new_laser.position = position
-					new_laser.rotation.y = rotation.y
-					world.add_child(new_laser)
-					
-					audio_player.play()
-					animator.play("recharge")
-					particles.emitting = true
-		
-		if Input.is_action_just_pressed("select"):
-			if selection_candidate:
-				selected = true
-			else:
-				selected = false
-	
-	if selected:
-		range_circle.visible = true
-		if (not placing) and (not upgrade_displaying):
-			upgrade_displaying = true
-			display_upgrade_button()
-	else:
-		range_circle.visible = false
-		if upgrade_displaying:
-			upgrade_displaying = false
-			cull_upgrade_button()
+    if not placing:
+        if (target != null) and (target_follower != null):
+            if position.distance_to(target_follower.position) <= range_distance + diameter:
+                look_at(target_follower.position)
+                rotation *= Vector3(0, 1, 0)
+                
+                if can_shoot:
+                    can_shoot = false
+                    timer.start()
+                    var new_laser = laser.instantiate()
+                    new_laser.position = position
+                    new_laser.rotation.y = rotation.y
+                    world.add_child(new_laser)
+                    
+                    audio_player.play()
+                    animator.play("recharge")
+                    particles.emitting = true
+        
+        if Input.is_action_just_pressed("select"):
+            if selection_candidate:
+                selected = true
+            else:
+                selected = false
+    
+    if selected:
+        range_circle.visible = true
+        if (not placing) and (not upgrade_displaying):
+            upgrade_displaying = true
+            display_upgrade_button()
+    else:
+        range_circle.visible = false
+        if upgrade_displaying:
+            upgrade_displaying = false
+            cull_upgrade_button()
 
 func _physics_process(delta: float) -> void:
-	if placing:
-		var exclusions = [self, camera]
-		var current_conflictors = []
-		for follower in path.get_children():
-			var e = follower.get_child(0)
-			if e:
-				if e.get_meta("entity_type") == "Enemy":
-					current_conflictors.append(e)
-		for tower in towers.get_children():
-			if tower:
-				if tower.get_meta("entity_type") == "Tower":
-					current_conflictors.append(tower)
-		exclusions.append_array(current_conflictors)
-		
-		var key = "position"
-		var ray_length = 1000
-		var space_state = get_world_3d().direct_space_state
-		var mouse_pos = get_viewport().get_mouse_position()
-		
-		var origin = camera.project_ray_origin(mouse_pos)
-		var end = origin + camera.project_ray_normal(mouse_pos) * ray_length
-		var ray_query = PhysicsRayQueryParameters3D.create(origin, end)
-		ray_query.exclude = exclusions
-		#ray_query.collide_with_areas = true
-		
-		var result = space_state.intersect_ray(ray_query)
-		
-		if (not Input.is_action_pressed("rotate_camera")) and (len(result) > 0):
-			position = result[key] + Vector3(0, diameter / 2, 0)
-		
-		if (len(result) > 0) and (result["collider"].get_meta("entity_type") in ["Track", "Tower"]):
-			invalidate_manual()
-			
-		if Input.is_action_just_pressed("place") and valid:
-			placing = false
-			stats.plates -= price
-			establish_targets()
-			animator.play("place_sound")
-			cull_placement_elements()
+    if placing:
+        var exclusions = [self, camera]
+        var current_conflictors = []
+        for follower in path.get_children():
+            var e = follower.get_child(0)
+            if e:
+                if e.get_meta("entity_type") == "Enemy":
+                    current_conflictors.append(e)
+        for tower in towers.get_children():
+            if tower:
+                if tower.get_meta("entity_type") == "Tower":
+                    current_conflictors.append(tower)
+        exclusions.append_array(current_conflictors)
+        
+        var key = "position"
+        var ray_length = 1000
+        var space_state = get_world_3d().direct_space_state
+        var mouse_pos = get_viewport().get_mouse_position()
+        
+        var origin = camera.project_ray_origin(mouse_pos)
+        var end = origin + camera.project_ray_normal(mouse_pos) * ray_length
+        var ray_query = PhysicsRayQueryParameters3D.create(origin, end)
+        ray_query.exclude = exclusions
+        #ray_query.collide_with_areas = true
+        
+        var result = space_state.intersect_ray(ray_query)
+        
+        if (not Input.is_action_pressed("rotate_camera")) and (len(result) > 0):
+            position = result[key] + Vector3(0, diameter / 2, 0)
+        
+        if (len(result) > 0) and (result["collider"].get_meta("entity_type") in ["Track", "Tower"]):
+            invalidate_manual()
+            
+        if Input.is_action_just_pressed("place") and valid:
+            placing = false
+            stats.plates -= price
+            establish_targets()
+            animator.play("place_sound")
+            cull_placement_elements()
 
 func on_timeout() -> void:
-	can_shoot = true
+    can_shoot = true
 
 func establish_targets() -> void:
-	var targets = range_area.get_overlapping_bodies()
-	for t in targets:
-		add_target(t)
+    var targets = range_area.get_overlapping_bodies()
+    for t in targets:
+        add_target(t)
 
 func add_target(node) -> void:
-	if not placing:
-		var enemy = node
-		var enemy_follower = node.get_parent()
-		if enemy.get_meta("entity_type") == "Enemy":
-			range_pool.append(enemy)
-			for e in range_pool:
-				if e != null:
-					var e_follower = e.get_parent()
-					if (target == null) or (target_follower == null):
-						target = e
-						target_follower = e_follower
-					elif (e_follower.progress > target_follower.progress) or (not in_range(target_follower)):
-						target = e
-						target_follower = e_follower
+    if not placing:
+        var enemy = node
+        var enemy_follower = node.get_parent()
+        if enemy.get_meta("entity_type") == "Enemy":
+            range_pool.append(enemy)
+            for e in range_pool:
+                if e != null:
+                    var e_follower = e.get_parent()
+                    if (target == null) or (target_follower == null):
+                        target = e
+                        target_follower = e_follower
+                    elif (e_follower.progress > target_follower.progress) or (not in_range(target_follower)):
+                        target = e
+                        target_follower = e_follower
 
 func remove_target(node) -> void:
-	if not placing:
-		var enemy = node
-		var enemy_follower = node.get_parent()
-		if enemy.get_meta("entity_type") == "Enemy":
-			range_pool.erase(enemy)
-			for e in range_pool:
-				if e != null:
-					var e_follower = e.get_parent()
-					if (target_follower == null):
-						target = e
-						target_follower = e_follower
-					elif (e.age > target.age) or (not in_range(target_follower)):
-						target = e
-						target_follower = e_follower
+    if not placing:
+        var enemy = node
+        var enemy_follower = node.get_parent()
+        if enemy.get_meta("entity_type") == "Enemy":
+            range_pool.erase(enemy)
+            for e in range_pool:
+                if e != null:
+                    var e_follower = e.get_parent()
+                    if (target_follower == null):
+                        target = e
+                        target_follower = e_follower
+                    elif (e.age > target.age) or (not in_range(target_follower)):
+                        target = e
+                        target_follower = e_follower
 
 func in_range(object):
-	if position.distance_to(object.position) <= range_distance:
-		return true
-	else:
-		return false
+    if position.distance_to(object.position) <= range_distance:
+        return true
+    else:
+        return false
 
 func invalidate(node) -> void: # Updates validation based on collision with track
-	if node.get_meta("entity_type") in ["Track", "Tower"]:
-		valid = false
-		range_circle.mesh.material = mat_invalid
+    if node.get_meta("entity_type") in ["Track", "Tower"]:
+        valid = false
+        range_circle.mesh.material = mat_invalid
 func validate(node) -> void: # Updates validation based on collision with track
-	if node.get_meta("entity_type") in ["Track", "Tower"]:
-		valid = true
-		range_circle.mesh.material = mat_valid
+    if node.get_meta("entity_type") in ["Track", "Tower"]:
+        valid = true
+        range_circle.mesh.material = mat_valid
 
 func invalidate_manual() -> void:
-	valid = false
-	range_circle.mesh.material = mat_invalid
+    valid = false
+    range_circle.mesh.material = mat_invalid
 func validate_manual() -> void:
-	valid = true
-	range_circle.mesh.material = mat_valid
+    valid = true
+    range_circle.mesh.material = mat_valid
 
 func encandidate() -> void:
-	selection_candidate = true
+    selection_candidate = true
 func excandidate() -> void:
-	selection_candidate = false
+    selection_candidate = false
 
 func display_upgrade_button() -> void:
-	var button = upgrade_container.get_node("UpgradeButton")
-	var desc = upgrade_container.get_node("UpgradeDescription")
-	
-	button.price = upgrade_price
-	button.assigned = self
-	button.target = upgrade_target
-	button.price = upgrade_price
-	button.maxed = false
-	
-	upgrade_container.visible = true
-	button.texture_normal = upgrade_button_sprite
-	desc.text = upgrade_description
+    var button = upgrade_container.get_node("UpgradeButton")
+    var desc = upgrade_container.get_node("UpgradeDescription")
+    
+    button.price = upgrade_price
+    button.assigned = self
+    button.target = upgrade_target
+    button.price = upgrade_price
+    button.maxed = false
+    
+    upgrade_container.visible = true
+    button.texture_normal = upgrade_button_sprite
+    desc.text = upgrade_description
 
 func cull_upgrade_button() -> void:
-	upgrade_container.visible = false
+    upgrade_container.visible = false
 
 func cull_placement_elements() -> void:
-	placement_area.queue_free()
+    placement_area.queue_free()
