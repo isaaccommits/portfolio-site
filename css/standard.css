@@ -22,6 +22,11 @@
     background-image: var(--bs-gradient);
 }
 
+.s-spacer
+{
+    opacity: 0;
+}
+
 /* buttons */
 .s-btn-eng
 {
