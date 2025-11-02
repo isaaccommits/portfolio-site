@@ -57,6 +57,14 @@
     background-color: #1080b035;
 }
 
+.s-btn-eng-back
+{
+    position: fixed;
+    bottom: 32vh;
+    left: 98vh;
+    right: 98vh;
+}
+
 .s-btn-code
 {
     /* <div class="h1 s-bg-green-50 border-white border-top border-start border-4 rounded-2"> */
